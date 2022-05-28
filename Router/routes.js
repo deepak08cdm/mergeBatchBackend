@@ -1,25 +1,44 @@
 const express = require('express')
+const dbSchema = require('../DB/dbSchema')
 const router = express.Router()
-const arr = []
+const details = require('../DB/dbSchema')
+let arr = []
 
 
-router.get('/getData',(req, res)=>{
-    res.send(arr)
+router.get('/',async(req, res)=>{
+    const data =await details.find()
+    res.send(data)
 })
-
-router.post('/',(req,res)=>{
-    const data = req.body
-    const filterDate = arr.find((ele)=> ele.userName === data.userName)
-    if(filterDate){
-        res.send(['duplicate data change the username'])
+router.get('/:id',async(req, res)=>{
+    try{
+        const id = +req.params.id
+        const result  = await details.find({id:id})
+        res.send(result)
     }
-    else{
-        arr.push(req.body)
-        res.send(req.body)
+    catch(err){
+        res.send(err)
+    }
+})
+router.post('/',async(req,res)=>{
+    try{
+        const find = await details.find({id:req.body.id})
+        if(find && (find.length>0)){
+            throw 'duplicate element'
+        }
+        const result = await details.create(req.body)
+    res.send(result)
+    }
+    catch(err){
+        res.send(err)
     }
 })
 
 router.get('/data',(req,res)=>{
     res.send([{name:'deepak'},{name:'mahesh'},{name:'himanshu'}])
+})
+router.delete('/',(req,res)=>{
+    const newArr = arr.filter((element)=>{req.body.id !== element.id})
+    arr=[...newArr]
+    res.send(arr)
 })
 module.exports = router;
