@@ -25,8 +25,8 @@ router.post('/',async(req,res)=>{
         if(find && (find.length>0)){
             throw 'duplicate element'
         }
-        const result = await details.create(req.body)
-    res.send(result)
+    const result = await details.create(req.body)
+    res.send({message:"added data successfully",result:result})
     }
     catch(err){
         res.send(err)

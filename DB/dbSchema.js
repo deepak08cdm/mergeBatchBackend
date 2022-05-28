@@ -1,5 +1,5 @@
-const mongo = require('mongoose')
-const dbSchema = new mongo.Schema(
+const mongoonse = require('mongoose')
+const dbSchema = new mongoonse.Schema(
     {
         id:{
             type:Number,
@@ -16,4 +16,4 @@ const dbSchema = new mongo.Schema(
     }
 )
 
-module.exports = mongo.model('details',dbSchema)
+module.exports = mongoonse.model('details',dbSchema)
